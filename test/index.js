@@ -32,4 +32,16 @@ lab.experiment('API test', () => {
     Code.expect(response.statusCode).to.equal(200)
     Code.expect(response.result).to.equal({ ok: 200 })
   })
+
+  lab.test('PUT /notification/{notificationNumber} route works', async () => {
+    const options = {
+      method: 'PUT',
+      url: '/notification/0001'
+    }
+
+    const creationResponse = await server.inject(options)
+    Code.expect(creationResponse.statusCode).to.equal(201)
+    const updateResponse = await server.inject(options)
+    Code.expect(updateResponse.statusCode).to.equal(200)
+  })
 })
