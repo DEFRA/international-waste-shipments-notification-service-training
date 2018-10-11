@@ -1,5 +1,6 @@
 const Lab = require('lab')
 const Code = require('code')
+const hoek = require('hoek')
 const lab = exports.lab = Lab.script()
 const createServer = require('../server')
 
@@ -34,14 +35,21 @@ lab.experiment('API test', () => {
   })
 
   lab.test('PUT /notification/{notificationNumber} route works', async () => {
+    const creationPayload = { method: 'PUT', payload: [{ hello: 'world' }] }
+    const updatePayload = { payload: [{ hi: 'new world' }] }
     const options = {
-      method: 'PUT',
       url: '/notification/0001'
     }
 
-    const creationResponse = await server.inject(options)
+    const getOptions = hoek.merge({ method: 'GET' }, options)
+    const creationOptions = hoek.merge(creationPayload, options)
+    const updateOptions = hoek.merge(updatePayload, creationOptions)
+
+    const creationResponse = await server.inject(creationOptions)
     Code.expect(creationResponse.statusCode).to.equal(201)
-    const updateResponse = await server.inject(options)
+    Code.expect(JSON.parse((await server.inject(getOptions)).payload).length).to.equal(1)
+    const updateResponse = await server.inject(updateOptions)
     Code.expect(updateResponse.statusCode).to.equal(200)
+    Code.expect(JSON.parse((await server.inject(getOptions)).payload).length).to.equal(2)
   })
 })
