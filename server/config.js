@@ -29,4 +29,4 @@ const value = result.value
 value.isDev = value.env === 'development'
 value.isProd = value.env === 'production'
 
-module.exports = value
+module.exports = Object.freeze(value)
