@@ -1,3 +1,4 @@
+// **An initial in memory fake implementation**
 const STATUS_CREATED = 201
 const STATUS_OK = 200
 var notifications = {}
