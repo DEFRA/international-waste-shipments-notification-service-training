@@ -1,4 +1,4 @@
-// **An initial in memory fake implementation**
+// **An initial in memory fake implementation - API versioning approach to be discussed**
 const STATUS_CREATED = 201
 const STATUS_OK = 200
 var notifications = {}
