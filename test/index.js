@@ -52,4 +52,14 @@ lab.experiment('API test', () => {
     Code.expect(updateResponse.statusCode).to.equal(200)
     Code.expect(JSON.parse((await server.inject(getOptions)).payload).length).to.equal(2)
   })
+
+  lab.test('Missing resources are handled correctly', async () => {
+    const options = {
+      method: 'GET',
+      url: '/missing/resource'
+    }
+
+    const response = await server.inject(options)
+    Code.expect(response.statusCode).to.equal(404)
+  })
 })
