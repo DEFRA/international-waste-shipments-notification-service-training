@@ -9,7 +9,7 @@ const handlers = {
   },
   put: (request, h) => {
     let responseCode
-    // Return the correct response code for PUT requests based on whether or not the notic
+    // Return the correct response code for PUT requests based on whether or not the notification has been 'created'.
     if (notifications[request.params.id]) {
       responseCode = STATUS_OK
     } else {
