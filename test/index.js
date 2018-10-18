@@ -7,9 +7,14 @@ const createServer = require('../server')
 lab.experiment('API test', () => {
   let server
 
-  // Create server before each test
+  // Create server before the tests.
   lab.before(async () => {
     server = await createServer()
+  })
+
+  // Stop server after the tests.
+  lab.after(async () => {
+    await server.stop()
   })
 
   lab.test('GET / route works', async () => {
