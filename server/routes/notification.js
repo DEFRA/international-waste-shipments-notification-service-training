@@ -1,11 +1,13 @@
 // **An initial in memory fake implementation - API versioning approach to be discussed**
 const STATUS_CREATED = 201
 const STATUS_OK = 200
+const STATUS_NOT_FOUND = 404
+
 var notifications = {}
 
 const handlers = {
   get: (request, h) => {
-    return notifications[request.params.id]
+    return notifications[request.params.id] || h.response().code(STATUS_NOT_FOUND)
   },
   put: (request, h) => {
     let responseCode
