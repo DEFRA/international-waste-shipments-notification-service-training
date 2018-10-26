@@ -17,7 +17,7 @@ const handlers = {
   },
   post: (request, h) => {
     let responseCode
-    if (notificationNumbers[request.payload.noticationNumber]) {
+    if (notificationNumbers[request.payload.notificationNumber]) {
       // There does not appear to be a standard for responding to duplicate POSTs.
       // Return a HTTP 400 status code for now.
       responseCode = STATUS_BAD_REQUEST
@@ -28,7 +28,7 @@ const handlers = {
       const id = uuid.v4()
       request.payload.id = id
       notifications[id] = request.payload
-      notificationNumbers[request.payload.noticationNumber] = true
+      notificationNumbers[request.payload.notificationNumber] = true
       responseCode = STATUS_CREATED
     }
     return h.response().code(responseCode)
