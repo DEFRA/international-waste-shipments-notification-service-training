@@ -39,9 +39,9 @@ lab.experiment('API test', () => {
     Code.expect(response.result).to.equal({ ok: 200 })
   })
 
-  lab.test('PUT /notification/{notificationNumber} route works', async () => {
-    const creationPayload = { method: 'PUT', payload: [{ hello: 'world' }] }
-    const updatePayload = { payload: [{ hi: 'new world' }] }
+  lab.test('PUT /notification/{id} route works', async () => {
+    const creationPayload = { method: 'PUT', payload: [{ authority: 'ea' }] }
+    const updatePayload = { payload: [{ type: 'recovery' }] }
     const options = {
       url: '/notification/0001'
     }
@@ -76,5 +76,27 @@ lab.experiment('API test', () => {
 
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(404)
+  })
+
+  lab.test('POST /notification route works', async () => {
+    const options = {
+      method: 'POST',
+      url: '/notification',
+      payload: {
+        authority: 'ea',
+        type: 'recovery',
+        notificationNumber: '0003'
+      }
+    }
+    const creationResponse = await server.inject(options)
+    Code.expect(creationResponse.statusCode).to.equal(201)
+
+    // Ensure that notification numbers cannot be reused.
+    options.payload.authority = 'nrw'
+
+    const duplicateResponse = await server.inject(options)
+    // There does not appear to be a standard for responding to duplicate POSTs.
+    // Expect a HTTP 400 status code for now.
+    Code.expect(duplicateResponse.statusCode).to.equal(400)
   })
 })

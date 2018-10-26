@@ -1,13 +1,37 @@
 // **An initial in memory fake implementation - API versioning approach to be discussed**
+const uuid = require('uuid')
+const STATUS_BAD_REQUEST = 400
 const STATUS_CREATED = 201
 const STATUS_OK = 200
 const STATUS_NOT_FOUND = 404
 
 var notifications = {}
 
+// Keep a record of notification numbers for efficient rejection of POST requests containing duplicate
+// notification numbers.
+var notificationNumbers = {}
+
 const handlers = {
   get: (request, h) => {
     return notifications[request.params.id] || h.response().code(STATUS_NOT_FOUND)
+  },
+  post: (request, h) => {
+    let responseCode
+    if (notificationNumbers[request.payload.noticationNumber]) {
+      // There does not appear to be a standard for responding to duplicate POSTs.
+      // Return a HTTP 400 status code for now.
+      responseCode = STATUS_BAD_REQUEST
+    } else {
+      // Generate a UUID to identify the notification rather than the notification number.
+      // UUID usage adds a line of defence against clients being able to retrieve data by
+      // guessing notification numbers.
+      const id = uuid.v4()
+      request.payload.id = id
+      notifications[id] = request.payload
+      notificationNumbers[request.payload.noticationNumber] = true
+      responseCode = STATUS_CREATED
+    }
+    return h.response().code(responseCode)
   },
   put: (request, h) => {
     let responseCode
@@ -28,6 +52,13 @@ module.exports = [{
   path: '/notification/{id}',
   options: {
     handler: handlers.get
+  }
+},
+{
+  method: 'POST',
+  path: '/notification',
+  options: {
+    handler: handlers.post
   }
 },
 {
