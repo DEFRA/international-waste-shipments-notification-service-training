@@ -39,9 +39,19 @@ lab.experiment('API test', () => {
     Code.expect(response.result).to.equal({ ok: 200 })
   })
 
-  lab.test('PUT /notification/{id} route works', async () => {
-    const creationPayload = { method: 'PUT', payload: [{ authority: 'ea' }] }
-    const updatePayload = { payload: [{ type: 'recovery' }] }
+  lab.test('GET /notification-types route works', async () => {
+    const options = {
+      method: 'GET',
+      url: '/notification-types'
+    }
+
+    const response = await server.inject(options)
+    Code.expect(response.statusCode).to.equal(200)
+  })
+
+  lab.test('PUT /notification/{notificationNumber} route works', async () => {
+    const creationPayload = { method: 'PUT', payload: [{ hello: 'world' }] }
+    const updatePayload = { payload: [{ hi: 'new world' }] }
     const options = {
       url: '/notification/0001'
     }
