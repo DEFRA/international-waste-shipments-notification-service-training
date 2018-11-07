@@ -6,7 +6,6 @@ const createServer = require('../server')
 
 lab.experiment('API test', () => {
   let server
-
   // Create server before the tests.
   lab.before(async () => {
     server = await createServer()
@@ -93,13 +92,23 @@ lab.experiment('API test', () => {
       method: 'POST',
       url: '/notification',
       payload: {
-        authority: 'ea',
-        type: 'recovery',
-        notificationNumber: '0003'
+        'id': '1',
+        'userid': '1',
+        'rowversion': '1',
+        'notificationtype': '3',
+        'competentauthority': 1,
+        'notificationnumber': '2',
+        'createddate': '2018-10-15',
+        'reasonforexport': 'Test',
+        'hasspecialhandlingrequirements': true,
+        'specialhandlingdetails': 'Test',
+        'isrecoverypercentagedataprovidedbyimporter': true,
+        'wastegenerationprocess': 'Test',
+        'iswastegenerationprocessattached': true
       }
     }
     const creationResponse = await server.inject(options)
-    Code.expect(creationResponse.statusCode).to.equal(201)
+    Code.expect(creationResponse.statusCode).to.equal(200)
 
     // Ensure that notification numbers cannot be reused.
     options.payload.authority = 'nrw'
@@ -110,3 +119,4 @@ lab.experiment('API test', () => {
     Code.expect(duplicateResponse.statusCode).to.equal(400)
   })
 })
+
