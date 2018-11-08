@@ -31,48 +31,25 @@ const handlers = {
       notifications[id] = request.payload
       notificationNumbers[request.payload.notificationNumber] = true
 
-      let notificationtype = 1
-      let notificationnumber = request.payload.notificationNumber
-      let userid = '001'
-      let rowversion = '2'
-      let competentauthority
-      switch (request.payload.authority) {
-        case 'ea':
-          competentauthority = '1'
-          break
-        case 'sepa':
-          competentauthority = '2'
-          break
-        case 'niea':
-          competentauthority = '3'
-          break
-        case 'nrw':
-          competentauthority = '4'
-          break
+      // TODO currently this just creates a test record.  Need to refactor to lookup competent authority and set
+      // real values not just random stuff
+      let notification = {
+        id: id,
+        notificationtype: 1,
+        notificationnumber: request.payload.notificationNumber,
+        userid: 'user',
+        rowversion: '1',
+        competentauthority: 1,
+        createddate: new Date(),
+        reasonforexport: 'reason',
+        hasspecialhandlingrequirements: true,
+        specialhandlingdetails: 'details',
+        isrecoverypercentagedataprovidedbyimporter: true,
+        wastegenerationprocess: 'process',
+        iswastegenerationprocessattached: true
       }
-      let createddate = '2018-10-15'
-      let reasonforexport = 'test'
-      let hasspecialhandlingrequirements = true
-      let specialhandlingdetails = 'test'
-      let isrecoverypercentagedataprovidedbyimporter = true
-      let wastegenerationprocess = 'test'
-      let iswastegenerationprocessattached = true
 
-      db.notification_notification.upsert({
-        'id': id,
-        'userid': userid,
-        'rowversion': rowversion,
-        'notificationtype': notificationtype,
-        'competentauthority': competentauthority,
-        'notificationnumber': notificationnumber,
-        'createddate': createddate,
-        'reasonforexport': reasonforexport,
-        'hasspecialhandlingrequirements': hasspecialhandlingrequirements,
-        'specialhandlingdetails': specialhandlingdetails,
-        'isrecoverypercentagedataprovidedbyimporter': isrecoverypercentagedataprovidedbyimporter,
-        'wastegenerationprocess': wastegenerationprocess,
-        'iswastegenerationprocessattached': iswastegenerationprocessattached
-      })
+      db.notification_notification.upsert(notification)
 
       responseCode = STATUS_CREATED
     }
