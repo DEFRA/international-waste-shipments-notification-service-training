@@ -1,5 +1,6 @@
 // **An initial in memory fake implementation - API versioning approach to be discussed**
 const uuid = require('uuid')
+const db = require('../models')
 const STATUS_BAD_REQUEST = 400
 const STATUS_CREATED = 201
 const STATUS_OK = 200
@@ -29,6 +30,50 @@ const handlers = {
       request.payload.id = id
       notifications[id] = request.payload
       notificationNumbers[request.payload.notificationNumber] = true
+
+      let notificationtype = 1
+      let notificationnumber = request.payload.notificationNumber
+      let userid = '001'
+      let rowversion = '2'
+      let competentauthority
+      switch (request.payload.authority) {
+        case 'ea':
+          competentauthority = '1'
+          break
+        case 'sepa':
+          competentauthority = '2'
+          break
+        case 'niea':
+          competentauthority = '3'
+          break
+        case 'nrw':
+          competentauthority = '4'
+          break
+      }
+      let createddate = '2018-10-15'
+      let reasonforexport = 'test'
+      let hasspecialhandlingrequirements = true
+      let specialhandlingdetails = 'test'
+      let isrecoverypercentagedataprovidedbyimporter = true
+      let wastegenerationprocess = 'test'
+      let iswastegenerationprocessattached = true
+
+      db.notification_notification.upsert({
+        'id': id,
+        'userid': userid,
+        'rowversion': rowversion,
+        'notificationtype': notificationtype,
+        'competentauthority': competentauthority,
+        'notificationnumber': notificationnumber,
+        'createddate': createddate,
+        'reasonforexport': reasonforexport,
+        'hasspecialhandlingrequirements': hasspecialhandlingrequirements,
+        'specialhandlingdetails': specialhandlingdetails,
+        'isrecoverypercentagedataprovidedbyimporter': isrecoverypercentagedataprovidedbyimporter,
+        'wastegenerationprocess': wastegenerationprocess,
+        'iswastegenerationprocessattached': iswastegenerationprocessattached
+      })
+
       responseCode = STATUS_CREATED
     }
     return h.response().code(responseCode)
