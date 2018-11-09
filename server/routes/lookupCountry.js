@@ -21,7 +21,7 @@ module.exports = {
         return h.response(countries).code(responseCode)
       } catch (err) {
         console.log(err)
-        return h.response('err').code(500)
+        return h.response(err).code(500)
       }
     }
   }
