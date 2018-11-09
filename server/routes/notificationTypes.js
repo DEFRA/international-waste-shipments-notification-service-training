@@ -2,6 +2,7 @@
 
 const models = require('../models')
 
+const STATUS_OK = 200
 const STATUS_NOT_FOUND = 404
 
 let notificationTypes = []
@@ -16,10 +17,11 @@ module.exports = {
           order: ['id'],
           attributes: ['id', 'description']
         })
-        return notificationTypes || h.response().code(STATUS_NOT_FOUND)
+        const responseCode = !Object.keys(notificationTypes).length ? STATUS_NOT_FOUND : STATUS_OK
+        return h.response(notificationTypes).code(responseCode)
       } catch (err) {
         console.log(err)
-        return { 'Database error: ': err }
+        return h.response(err).code(500)
       }
     }
   }

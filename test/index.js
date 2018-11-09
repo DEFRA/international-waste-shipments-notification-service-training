@@ -1,7 +1,9 @@
 const Lab = require('lab')
 const Code = require('code')
-const hoek = require('hoek')
+// const hoek = require('hoek')
 const lab = exports.lab = Lab.script()
+const rewire = require('rewire')
+const sinon = require('sinon')
 const createServer = require('../server')
 
 lab.experiment('API test', () => {
@@ -39,35 +41,485 @@ lab.experiment('API test', () => {
     Code.expect(response.result).to.equal({ ok: 200 })
   })
 
-  lab.test('GET /notification-types route works', async () => {
-    const options = {
-      method: 'GET',
-      url: '/notification-types'
+  lab.test('lookup-notificationtype works', async () => {
+    const notificationTypes = rewire('../server/routes/notificationTypes')
+
+    // Fake lookup_notificationtype data
+
+    const types = {
+      id: '1',
+      description: 'Test type'
     }
 
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
-  })
-
-  lab.test('PUT /notification/{notificationNumber} route works', async () => {
-    const creationPayload = { method: 'PUT', payload: [{ hello: 'world' }] }
-    const updatePayload = { payload: [{ hi: 'new world' }] }
-    const options = {
-      url: '/notification/0001'
+    const models = {
+      lookup_notificationtype: {
+        findAll: sinon.stub().resolves(types)
+      }
     }
 
-    const getOptions = hoek.merge({ method: 'GET' }, options)
-    const creationOptions = hoek.merge(creationPayload, options)
-    const updateOptions = hoek.merge(updatePayload, creationOptions)
+    const request = {}
 
-    const creationResponse = await server.inject(creationOptions)
-    Code.expect(creationResponse.statusCode).to.equal(201)
-    Code.expect(JSON.parse((await server.inject(getOptions)).payload).length).to.equal(1)
-    const updateResponse = await server.inject(updateOptions)
-    Code.expect(updateResponse.statusCode).to.equal(200)
-    Code.expect(JSON.parse((await server.inject(getOptions)).payload).length).to.equal(2)
+    const h = {
+      response: () => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+
+    const revert = notificationTypes.__set__({ models })
+
+    await notificationTypes.options.handler(request, h).then((result) => {
+      Code.expect(result).to.equal(200)
+    })
+
+    revert()
   })
 
+  lab.test('empty lookup-notificationtype works', async () => {
+    const notificationTypes = rewire('../server/routes/notificationTypes')
+
+    // Fake lookup_notificationtype data
+
+    const types = {}
+
+    const models = {
+      lookup_notificationtype: {
+        findAll: sinon.stub().resolves(types)
+      }
+    }
+
+    const request = {}
+
+    const h = {
+      response: () => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+
+    const revert = notificationTypes.__set__({ models })
+
+    await notificationTypes.options.handler(request, h).then((result) => {
+      Code.expect(result).to.equal(404)
+    })
+
+    revert()
+  })
+
+  lab.test('lookup-notificationtype error handled', async () => {
+    const notificationTypes = rewire('../server/routes/notificationTypes')
+
+    // Fake lookup_notificationtype data
+
+    const types = null
+
+    const models = {
+      lookup_notificationtype: {
+        findAll: sinon.stub().resolves(types)
+      }
+    }
+
+    const request = {}
+
+    const h = {
+      response: () => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+
+    const revert = notificationTypes.__set__({ models })
+
+    await notificationTypes.options.handler(request, h).then((result) => {
+      Code.expect(result).to.equal(500)
+    })
+
+    revert()
+  })
+
+  lab.test('lookup-country works', async () => {
+    const lookupCountry = rewire('../server/routes/lookupCountry')
+
+    // Fake lookup_country data
+
+    const countries = {
+      id: '1',
+      name: 'Test Country',
+      isoalpha2code: 'TC',
+      iseuropeanunionmember: true
+    }
+
+    const models = {
+      lookup_country: {
+        findAll: sinon.stub().resolves(countries)
+      }
+    }
+
+    const revert = lookupCountry.__set__({ models })
+
+    const request = {}
+
+    const h = {
+      response: () => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+
+    await lookupCountry.options.handler(request, h).then((result) => {
+      Code.expect(result).to.equal(200)
+    })
+
+    revert()
+  })
+
+  lab.test('empty lookup-country handled', async () => {
+    const lookupCountry = rewire('../server/routes/lookupCountry')
+
+    // Fake lookup_country data
+
+    const countries = {}
+
+    const models = {
+      lookup_country: {
+        findAll: sinon.stub().resolves(countries)
+      }
+    }
+
+    const revert = lookupCountry.__set__({ models })
+
+    const request = {}
+
+    const h = {
+      response: () => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+
+    await lookupCountry.options.handler(request, h).then((result) => {
+      Code.expect(result).to.equal(404)
+    })
+
+    revert()
+  })
+
+  lab.test('lookup-country error handled', async () => {
+    const lookupCountry = rewire('../server/routes/lookupCountry')
+
+    // Fake lookup_country data
+
+    const countries = null
+
+    const models = {
+      lookup_country: {
+        findAll: sinon.stub().resolves(countries)
+      }
+    }
+
+    const revert = lookupCountry.__set__({ models })
+
+    const request = {}
+
+    const h = {
+      response: () => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+
+    await lookupCountry.options.handler(request, h).then((result) => {
+      Code.expect(result).to.equal(500)
+    })
+
+    revert()
+  })
+
+  lab.test('GET /notification works', async () => {
+    const notification = rewire('../server/routes/notification')
+    // Fake notification_notification data
+    const notificationData = {
+      'id': '1111-1111-1111-1111',
+      'userid': '1',
+      'notificationtype': 1,
+      'competentauthority': 1,
+      'notificationnumber': '1',
+      'createddate': '2018-10-15',
+      'reasonforexport': 'Test',
+      'hasspecialhandlingrequirements': true,
+      'specialhandlingdetails': 'Test',
+      'isrecoverypercentagedataprovidedbyimporter': true,
+      'wastegenerationprocess': 'Test',
+      'iswastegenerationprocessattached': true
+    }
+
+    const models = {
+      notification_notification: {
+        findAll: sinon.stub().resolves(notificationData)
+      }
+    }
+
+    const revert = notification.__set__({ models })
+
+    const request = { params: {} }
+    const h = {
+      response: () => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+    request.params.id = '1111-1111-1111-1111'
+
+    await notification[0].options.handler(request, h).then((result) => {
+      Code.expect(result).to.equal(200)
+    })
+
+    revert()
+  })
+
+  lab.test('GET /notification works handles empty table', async () => {
+    const notification = rewire('../server/routes/notification')
+    // Fake empty notification_notification data
+    const notificationData = {}
+
+    const models = {
+      notification_notification: {
+        findAll: sinon.stub().resolves(notificationData)
+      }
+    }
+
+    const revert = notification.__set__({ models })
+
+    const request = { params: {} }
+    const h = {
+      response: () => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+    request.params.id = '1111-1111-1111-1111'
+
+    await notification[0].options.handler(request, h).then((result) => {
+      Code.expect(result).to.equal(404)
+    })
+
+    revert()
+  })
+
+  lab.test('GET /notification works handles error', async () => {
+    const notification = rewire('../server/routes/notification')
+    // Fake empty notification_notification data
+    const notificationData = null
+
+    const models = {
+      notification_notification: {
+        findAll: sinon.stub().resolves(notificationData)
+      }
+    }
+
+    const revert = notification.__set__({ models })
+
+    const request = { params: {} }
+    const h = {
+      response: () => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+    request.params.id = '1111-1111-1111-1111'
+
+    await notification[0].options.handler(request, h).then((result) => {
+      Code.expect(result).to.equal(500)
+    })
+
+    revert()
+  })
+
+  lab.test('/POST - create notification via upsert works', async () => {
+    const notification = rewire('../server/routes/notification')
+    // Fake notification_notification data
+    const notificationData = [{
+      'userid': '1',
+      'notificationtype': 1,
+      'competentauthority': 1,
+      'notificationnumber': '1',
+      'createddate': '2018-10-15',
+      'reasonforexport': 'Test',
+      'hasspecialhandlingrequirements': true,
+      'specialhandlingdetails': 'Test',
+      'isrecoverypercentagedataprovidedbyimporter': true,
+      'wastegenerationprocess': 'Test',
+      'iswastegenerationprocessattached': true
+    },
+    true
+    ]
+
+    const models = {
+      notification_notification: {
+        upsert: sinon.stub().resolves(notificationData)
+      }
+    }
+
+    const revertModels = notification.__set__({ models })
+
+    // Fake upsert 'parent'
+
+    const createPayload = {
+      method: 'post',
+      payload: {
+        'userid': '1',
+        'notificationtype': 1,
+        'competentauthority': 1,
+        'notificationnumber': '1',
+        'createddate': '2018-10-15',
+        'reasonforexport': 'Test',
+        'hasspecialhandlingrequirements': true,
+        'specialhandlingdetails': 'Test',
+        'isrecoverypercentagedataprovidedbyimporter': true,
+        'wastegenerationprocess': 'Test',
+        'iswastegenerationprocessattached': true
+      }
+    }
+
+    const h = {
+      response: (record) => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+
+    await notification[1].options.handler(createPayload, h).then((result) => {
+      Code.expect(result).to.equal(201)
+    })
+
+    revertModels()
+  })
+
+  lab.test('/PUT - update notification via upsert works', async () => {
+    const notification = rewire('../server/routes/notification')
+    // Fake notification_notification data
+    const notificationData = [{
+      'id': '1111-1111-1111-1111',
+      'userid': '1',
+      'notificationtype': 1,
+      'competentauthority': 1,
+      'notificationnumber': '1',
+      'createddate': '2018-10-15',
+      'reasonforexport': 'Test',
+      'hasspecialhandlingrequirements': true,
+      'specialhandlingdetails': 'Test',
+      'isrecoverypercentagedataprovidedbyimporter': true,
+      'wastegenerationprocess': 'Test',
+      'iswastegenerationprocessattached': true
+    },
+    false
+    ]
+
+    const models = {
+      notification_notification: {
+        upsert: sinon.stub().resolves(notificationData)
+      }
+    }
+
+    const revertModels = notification.__set__({ models })
+
+    const updatePayload = {
+      method: 'put',
+      payload: {
+        'id': '1111-1111-1111-1111',
+        'userid': '1',
+        'notificationtype': 1,
+        'competentauthority': 2,
+        'notificationnumber': '2',
+        'createddate': '2018-10-15',
+        'reasonforexport': 'Test',
+        'hasspecialhandlingrequirements': true,
+        'specialhandlingdetails': 'Test',
+        'isrecoverypercentagedataprovidedbyimporter': true,
+        'wastegenerationprocess': 'Test',
+        'iswastegenerationprocessattached': true
+      }
+    }
+
+    const h = {
+      response: (record) => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+
+    await notification[1].options.handler(updatePayload, h).then((result) => {
+      Code.expect(result).to.equal(200)
+    })
+
+    revertModels()
+  })
+
+  lab.test('notification upsert errors handled part 2', async () => {
+    const notification = rewire('../server/routes/notification')
+    // Fake notification_notification data
+    const notificationData = null
+
+    const models = {
+      notification_notification: {
+        upsert: sinon.stub().resolves(notificationData)
+      }
+    }
+
+    const revertModels = notification.__set__({ models })
+
+    const creationPayload = {
+      payload: {
+        'notificationtype': 1,
+        'competentauthority': 2,
+        'notificationnumber': '2',
+        'createddate': '2018-10-15',
+        'reasonforexport': 'Test',
+        'hasspecialhandlingrequirements': true,
+        'specialhandlingdetails': 'Test',
+        'isrecoverypercentagedataprovidedbyimporter': true,
+        'wastegenerationprocess': 'Test',
+        'iswastegenerationprocessattached': true
+      }
+    }
+
+    const h = {
+      response: (record) => {
+        this.code = (code) => {
+          return code
+        }
+        return this
+      }
+    }
+
+    await notification[1].options.handler(creationPayload, h).then((result) => {
+      Code.expect(result).to.equal(500)
+    })
+
+    revertModels()
+  })
   lab.test('Missing resources are handled correctly', async () => {
     const options = {
       method: 'GET',
@@ -86,27 +538,5 @@ lab.experiment('API test', () => {
 
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(404)
-  })
-
-  lab.test('POST /notification route works', async () => {
-    const options = {
-      method: 'POST',
-      url: '/notification',
-      payload: {
-        authority: 'ea',
-        type: 'recovery',
-        notificationNumber: '0003'
-      }
-    }
-    const creationResponse = await server.inject(options)
-    Code.expect(creationResponse.statusCode).to.equal(201)
-
-    // Ensure that notification numbers cannot be reused.
-    options.payload.authority = 'nrw'
-
-    const duplicateResponse = await server.inject(options)
-    // There does not appear to be a standard for responding to duplicate POSTs.
-    // Expect a HTTP 400 status code for now.
-    Code.expect(duplicateResponse.statusCode).to.equal(400)
   })
 })
