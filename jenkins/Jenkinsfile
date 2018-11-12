@@ -28,7 +28,7 @@ pipeline {
         stage('Upload distribution') {
             steps {
                 script {
-                    arti.uploadArtifact("iws-snapshots/web/", "iws_notification_api", BUILD_TAG, DIST_FILE)
+                    arti.uploadArtifact("iws-snapshots/notification-api/", "iws_notification_api", BUILD_TAG, DIST_FILE)
                 }
             }
         }
