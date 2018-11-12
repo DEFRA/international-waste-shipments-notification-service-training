@@ -119,4 +119,3 @@ lab.experiment('API test', () => {
     Code.expect(duplicateResponse.statusCode).to.equal(400)
   })
 })
-

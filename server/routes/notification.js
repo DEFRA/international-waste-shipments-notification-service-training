@@ -6,7 +6,6 @@ const STATUS_NOT_FOUND = 404
 const models = require('../models')
 
 var notifications = {}
-let notificationTypes = []
 
 // Keep a record of notification numbers for efficient rejection of POST requests containing duplicate
 // notification numbers.
@@ -60,7 +59,7 @@ const handlers = {
       let iswastegenerationprocessattached = true
       console.log(request.payload)
       try {
-        notificationTypes = await models.notification_notification.upsert({
+        await models.notification_notification.upsert({
           'id': id,
           // 'description': description,
           'userid': userid,
@@ -75,20 +74,6 @@ const handlers = {
           'isrecoverypercentagedataprovidedbyimporter': isrecoverypercentagedataprovidedbyimporter,
           'wastegenerationprocess': wastegenerationprocess,
           'iswastegenerationprocessattached': iswastegenerationprocessattached
-          // 'id': id,
-          // 'description': request.payload.description,
-          // 'userid': request.payload.userid,
-          // 'rowversion': request.payload.rowversion,
-          // 'notificationtype': request.payload.notificationtype,
-          // 'competentauthority': request.payload.competentauthority,
-          // 'notificationnumber': request.payload.notificationnumber,
-          // 'createddate': request.payload.createddate,
-          // 'reasonforexport': request.payload.reasonforexport,
-          // 'hasspecialhandlingrequirements': request.payload.hasspecialhandlingrequirements,
-          // 'specialhandlingdetails': request.payload.specialhandlingdetails,
-          // 'isrecoverypercentagedataprovidedbyimporter': request.payload.isrecoverypercentagedataprovidedbyimporter,
-          // 'wastegenerationprocess': request.payload.wastegenerationprocess,
-          // 'iswastegenerationprocessattached': request.payload.iswastegenerationprocessattached
         })
         return h.response().code(STATUS_OK)
       } catch (err) {
