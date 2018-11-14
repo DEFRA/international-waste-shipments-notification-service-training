@@ -1,6 +1,7 @@
 // **An initial in memory fake implementation - API versioning approach to be discussed**
 const uuid = require('uuid')
 const db = require('../models')
+const Op = require('sequelize').Op
 const STATUS_BAD_REQUEST = 400
 const STATUS_CREATED = 201
 const STATUS_OK = 200
@@ -16,7 +17,7 @@ const handlers = {
   get: (request, h) => {
     return notifications[request.params.id] || h.response().code(STATUS_NOT_FOUND)
   },
-  post: (request, h) => {
+  post: async (request, h) => {
     let responseCode
     if (notificationNumbers[request.payload.notificationNumber]) {
       // There does not appear to be a standard for responding to duplicate POSTs.
@@ -24,7 +25,7 @@ const handlers = {
       responseCode = STATUS_BAD_REQUEST
     } else {
       // Generate a UUID to identify the notification rather than the notification number.
-      // UUID usage adds a line of defence against clients being able to retrieve data by
+      // UUID usage adds a line of defence against clientsconst Op = db.being able to retrieve data by
       // guessing notification numbers.
       const id = uuid.v4()
       request.payload.id = id
@@ -33,13 +34,16 @@ const handlers = {
 
       // TODO currently this just creates a test record.  Need to refactor to lookup competent authority and set
       // real values not just random stuff
+      let competentAuthority = await db.lookup_competentauthority.findOne({ where: { abbreviation: request.payload.authority.toUpperCase() } })
+      let unitedKingdomCompetentAuthority = await db.lookup_unitedkingdomcompetentauthority.findOne({ where: { competentauthorityid: competentAuthority.id } })
+      let shipmentType = await db.lookup_notificationtype.findOne({ where: { description: { [Op.iLike]: request.payload.type } } })
       let notification = {
         id: id,
-        notificationtype: 1,
+        notificationtype: shipmentType.id,
         notificationnumber: request.payload.notificationNumber,
         userid: 'user',
         rowversion: '1',
-        competentauthority: 1,
+        competentauthority: unitedKingdomCompetentAuthority.id,
         createddate: new Date(),
         reasonforexport: 'reason',
         hasspecialhandlingrequirements: true,
