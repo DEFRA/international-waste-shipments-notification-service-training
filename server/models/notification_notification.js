@@ -2,12 +2,12 @@
 module.exports = (sequelize, DataTypes) => {
   const notificationNotification = sequelize.define('notification_notification', {
     id: {
-      type: DataTypes.CHAR,
+      type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true
     },
     userid: {
-      type: DataTypes.CHAR,
+      type: DataTypes.STRING,
       allowNull: false
     },
     notificationtype: {
