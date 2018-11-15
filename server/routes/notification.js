@@ -1,10 +1,15 @@
 // **An initial in memory fake implementation - API versioning approach to be discussed**
 const notificationService = require('../services/notification-service')
 const STATUS_OK = 200
+const STATUS_NOT_FOUND = 404
 
 const handlers = {
-  get: (request, h) => {
-    return notificationService.get(request.params.id)
+  get: async (request, h) => {
+    let notification = await notificationService.get(request.params.id)
+    if (notification) {
+      return h.response(notification).code(STATUS_OK)
+    }
+    return h.response(notification).code(STATUS_NOT_FOUND)
   },
   post: async (request, h) => {
     await notificationService.createOrUpdate(request)
