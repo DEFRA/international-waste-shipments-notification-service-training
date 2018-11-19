@@ -11,9 +11,15 @@
   "author": "Department for Environment, Food and Rural Affairs <https://www.gov.uk/government/organisations/department-for-environment-food-rural-affairs>.",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
+    "acorn": "^6.0.2",
     "boom": "7.2.0",
     "hapi": "17.5.4",
     "joi": "13.6.0",
+    "pg": "^7.5.0",
+    "rewire": "^4.0.1",
+    "sequelize": "^4.41.0",
+    "sequelize-cli": "^5.2.0",
+    "sinon": "^7.1.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
