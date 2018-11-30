@@ -300,14 +300,4 @@ lab.experiment('API test', () => {
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(404)
   })
-
-  lab.test('Retrieval of a non-existent notification returns a HTTP 404 status code', async () => {
-    const options = {
-      method: 'GET',
-      url: '/notification/0002'
-    }
-
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(404)
-  })
 })
