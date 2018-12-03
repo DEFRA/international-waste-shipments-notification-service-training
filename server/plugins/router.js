@@ -1,7 +1,11 @@
 const routes = [].concat(
-  require('../routes/home'),
   require('../routes/about'),
-  require('../routes/notification')
+  require('../routes/home'),
+  require('../routes/competent-authorities'),
+  require('../routes/countries'),
+  require('../routes/notification'),
+  require('../routes/notification-types'),
+  require('../routes/united-kingdom-competent-authorities')
 )
 
 module.exports = {
