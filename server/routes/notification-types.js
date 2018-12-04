@@ -26,6 +26,7 @@ module.exports = {
   path: '/notification-types',
   options: {
     description: 'Notification type lookup API call',
+    tags: ['api', 'notification-types'],
     handler: handlers.get
   }
 }

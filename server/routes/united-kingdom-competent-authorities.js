@@ -27,6 +27,7 @@ module.exports = {
   path: '/united-kingdom-competent-authorities',
   options: {
     description: 'United Kingdom competent authority lookup API call',
+    tags: ['api', 'united-kingdom-competent-authorities'],
     handler: handlers.get
   }
 }

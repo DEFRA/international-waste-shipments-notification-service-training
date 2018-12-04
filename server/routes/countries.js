@@ -26,6 +26,7 @@ module.exports = {
   path: '/countries',
   options: {
     description: 'Country lookup API call',
+    tags: ['api', 'countries'],
     handler: handlers.get
   }
 }

@@ -26,6 +26,7 @@ module.exports = {
   path: '/competent-authorities',
   options: {
     description: 'Competent authority lookup API call',
+    tags: ['api', 'competent-authorities'],
     handler: handlers.get
   }
 }
