@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "standard",
-    "unit-test": "lab --verbose",
+    "unit-test": "lab --verbose -I 'core,__core-js_shared__'",
     "test": "npm run lint && npm run unit-test"
   },
   "author": "Department for Environment, Food and Rural Affairs <https://www.gov.uk/government/organisations/department-for-environment-food-rural-affairs>.",
