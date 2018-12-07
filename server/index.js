@@ -7,7 +7,7 @@ const hapiSwagger = require('hapi-swagger')
 async function createServer () {
   // Create the hapi server
   const server = hapi.server({
-    port: config.port,
+    port: config.servicePort,
     routes: {
       validate: {
         options: {

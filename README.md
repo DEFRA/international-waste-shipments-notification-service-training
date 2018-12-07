@@ -17,10 +17,12 @@ This solution exists for training purposes. The structure of this repository is 
 |---------------------------|-------------------|:--------:|-----------|:---------------------------:|-------|
 | NODE_ENV                  | Node environment  |    no    |           | development,test,production |       |
 | PORT                      | Port number       |    no    | 3001      |                             |       |
-| IWS_POSTGRES_IWS_HOST     | Database host IP  |    no    | localhost |                             |       |
+| IWS_POSTGRES_HOST         | Database host IP  |    no    | localhost |                             |       |
+| IWS_POSTGRES_PORT         | Database host port|    no    | 5432      |                             |       |
 | IWS_POSTGRES_IWS_DATABASE | Database name     |    yes   |           |                             |       |
+| IWS_DATABASE_DIALECT      | Database dialect  |    no    | postgres  |                             |       |
 | IWS_POSTGRES_IWS_USER     | Database user     |    yes   |           |                             |       |
-| IWS_POSTGRES_IWS_PASSWORD | Database password |          |           |                             |       |
+| IWS_POSTGRES_IWS_PASSWORD | Database password |    yes   |           |                             |       |
 
 ## Prerequires
 
@@ -29,6 +31,10 @@ Node v8+
 ## Running the application
 
 `$ node index.js`
+
+## API documentation
+
+In a browser navigate to the /documentation route
 
 ## Contributing to this project
 

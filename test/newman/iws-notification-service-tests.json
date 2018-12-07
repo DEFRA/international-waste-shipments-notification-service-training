@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "1badd7fb-f6e6-48b5-a9d1-1d2fd0162996",
+		"name": "International-Waste-Shipments-Notification-Service-Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:3001/competent-authorities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c9dc9a46-fd78-4e1e-b320-56487d52bb68",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3001/competent-authorities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"competent-authorities"
+					]
+				},
+				"description": "Get a list of competent authorities"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3001/countries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "19aa8000-9b45-4e48-9f5a-cd67eaf835a3",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3001/countries",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"countries"
+					]
+				},
+				"description": "Get a list of countries"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3001/notification-types",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ec668f39-5c33-43c2-aef3-2b88548d233b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3001/notification-types",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"notification-types"
+					]
+				},
+				"description": "Get a list of notification types"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3001/united-kingdom-competent-authorities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f2412a91-3bcc-481b-b319-6fa28bb8799b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3001/united-kingdom-competent-authorities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"united-kingdom-competent-authorities"
+					]
+				},
+				"description": "Get a list of United Kingdom competent authorities"
+			},
+			"response": []
+		}
+	]
+}
