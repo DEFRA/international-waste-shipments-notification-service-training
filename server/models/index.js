@@ -11,6 +11,7 @@ const config = {
   'password': process.env.IWS_POSTGRES_IWS_PASSWORD,
   'database': process.env.IWS_POSTGRES_IWS_DATABASE,
   'host': process.env.IWS_POSTGRES_IWS_HOST || '127.0.0.1',
+  'port': process.env.IWS_POSTGRES_HOST_PORT || 5332,
   'dialect': 'postgres'
 }
 
