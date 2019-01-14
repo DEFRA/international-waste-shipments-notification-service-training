@@ -9,7 +9,7 @@ const handlers = {
   get: async (request, h) => {
     try {
       countries = await models.lookup_country.findAll({
-        order: ['id'],
+        order: ['name'],
         attributes: ['id', 'name', 'isoalpha2code', 'iseuropeanunionmember']
       })
       const responseCode = !Object.keys(countries).length ? STATUS_NOT_FOUND : STATUS_OK
